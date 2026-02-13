@@ -11,7 +11,9 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-navy backdrop-blur-sm border-b border-gold/20">
       <div className="container mx-auto flex items-center justify-between py-0 px-4">
-        <img src={logo} alt="Novus Meubelstoffeerderij" className="h-36 md:h-44 -mt-10 -mb-14 md:-mt-6" />
+        <a href="#home">
+          <img src={logo} alt="Novus Meubelstoffeerderij" className="h-24 md:h-44 -mt-6 -mb-8 md:-mt-6 md:-mb-14" />
+        </a>
         
         {/* Desktop */}
         <ul className="hidden md:flex items-center gap-8">

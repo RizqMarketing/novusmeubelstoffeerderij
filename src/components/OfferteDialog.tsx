@@ -25,7 +25,7 @@ const OfferteDialog = ({ children }: { children: React.ReactNode }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="bg-navy border border-gold/20 max-w-xl p-0 overflow-hidden max-h-[90vh] overflow-y-auto">
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="bg-navy border border-gold/20 max-w-xl p-0 overflow-hidden max-h-[90vh] overflow-y-auto">
         {/* Decorative accent */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0" />
 
@@ -40,7 +40,7 @@ const OfferteDialog = ({ children }: { children: React.ReactNode }) => {
                   Gratis Offerte Aanvragen
                 </DialogTitle>
                 <DialogDescription className="font-body text-xs text-cream/40">
-                  Alle velden zijn optioneel
+                  Velden met * zijn verplicht
                 </DialogDescription>
               </div>
             </div>
@@ -60,10 +60,11 @@ const OfferteDialog = ({ children }: { children: React.ReactNode }) => {
                       : "top-2 text-cream/30"
                   }`}
                 >
-                  Naam
+                  Naam <span className="text-gold">*</span>
                 </label>
                 <input
                   type="text"
+                  required
                   onFocus={() => setFocusedField("naam")}
                   onBlur={(e) => !e.target.value && setFocusedField(null)}
                   className="w-full bg-navy-light/60 border border-gold/15 text-cream px-5 pt-7 pb-3 font-body text-sm focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] transition-all duration-300"
@@ -77,10 +78,11 @@ const OfferteDialog = ({ children }: { children: React.ReactNode }) => {
                       : "top-2 text-cream/30"
                   }`}
                 >
-                  Telefoonnummer
+                  Telefoonnummer <span className="text-gold">*</span>
                 </label>
                 <input
                   type="tel"
+                  required
                   onFocus={() => setFocusedField("telefoon")}
                   onBlur={(e) => !e.target.value && setFocusedField(null)}
                   className="w-full bg-navy-light/60 border border-gold/15 text-cream px-5 pt-7 pb-3 font-body text-sm focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] transition-all duration-300"
@@ -96,10 +98,11 @@ const OfferteDialog = ({ children }: { children: React.ReactNode }) => {
                     : "top-2 text-cream/30"
                 }`}
               >
-                E-mailadres
+                E-mailadres <span className="text-gold">*</span>
               </label>
               <input
                 type="email"
+                required
                 onFocus={() => setFocusedField("email")}
                 onBlur={(e) => !e.target.value && setFocusedField(null)}
                 className="w-full bg-navy-light/60 border border-gold/15 text-cream px-5 pt-7 pb-3 font-body text-sm focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] transition-all duration-300"
