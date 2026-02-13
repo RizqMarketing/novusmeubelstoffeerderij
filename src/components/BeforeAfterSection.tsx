@@ -1,4 +1,5 @@
 import beforeAfterImage from "@/assets/before-after.jpg";
+import OfferteDialog from "./OfferteDialog";
 
 const BeforeAfterSection = () => {
   return (
@@ -32,12 +33,11 @@ const BeforeAfterSection = () => {
                 </li>
               ))}
             </ul>
-            <a
-              href="#contact"
-              className="inline-block font-body text-sm tracking-wider uppercase px-8 py-4 bg-gold text-navy font-semibold hover:bg-gold-light transition-all duration-300"
-            >
-              Plan Een Afspraak
-            </a>
+            <OfferteDialog>
+              <button className="inline-block font-body text-sm tracking-wider uppercase px-8 py-4 bg-gold text-navy font-semibold hover:bg-gold-light transition-all duration-300">
+                Plan Een Afspraak
+              </button>
+            </OfferteDialog>
           </div>
           <div className="overflow-hidden shadow-2xl">
             <img

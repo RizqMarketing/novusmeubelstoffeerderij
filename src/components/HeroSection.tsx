@@ -1,4 +1,5 @@
 import heroImage from "@/assets/hero-upholstery.jpg";
+import OfferteDialog from "./OfferteDialog";
 
 const HeroSection = () => {
   return (
@@ -35,12 +36,11 @@ const HeroSection = () => {
           className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in-up"
           style={{ animationDelay: "1.1s" }}
         >
-          <a
-            href="#contact"
-            className="font-body text-sm tracking-wider uppercase px-8 py-4 bg-gold text-navy font-semibold hover:bg-gold-light transition-all duration-300"
-          >
-            Vraag Een Offerte Aan
-          </a>
+          <OfferteDialog>
+            <button className="font-body text-sm tracking-wider uppercase px-8 py-4 bg-gold text-navy font-semibold hover:bg-gold-light transition-all duration-300">
+              Vraag Een Offerte Aan
+            </button>
+          </OfferteDialog>
           <a
             href="#diensten"
             className="font-body text-sm tracking-wider uppercase px-8 py-4 border border-cream/40 text-cream hover:border-gold hover:text-gold transition-all duration-300"

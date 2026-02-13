@@ -1,6 +1,7 @@
 import logo from "@/assets/novuslogo.png";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import OfferteDialog from "./OfferteDialog";
 
 const navItems = ["Home", "Diensten", "Over Ons", "Portfolio", "Contact"];
 
@@ -26,12 +27,11 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <a
-          href="#contact"
-          className="hidden md:inline-block font-body text-sm tracking-wider uppercase px-6 py-2.5 border border-gold text-gold hover:bg-gold hover:text-navy transition-all duration-300"
-        >
-          Gratis Offerte
-        </a>
+        <OfferteDialog>
+          <button className="hidden md:inline-block font-body text-sm tracking-wider uppercase px-6 py-2.5 border border-gold text-gold hover:bg-gold hover:text-navy transition-all duration-300">
+            Gratis Offerte
+          </button>
+        </OfferteDialog>
 
         {/* Mobile toggle */}
         <button onClick={() => setOpen(!open)} className="md:hidden text-gold">
@@ -55,13 +55,14 @@ const Navbar = () => {
               </li>
             ))}
             <li>
-              <a
-                href="#contact"
-                onClick={() => setOpen(false)}
-                className="font-body text-sm tracking-wider uppercase px-6 py-2.5 border border-gold text-gold hover:bg-gold hover:text-navy transition-all duration-300"
-              >
-                Gratis Offerte
-              </a>
+              <OfferteDialog>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="font-body text-sm tracking-wider uppercase px-6 py-2.5 border border-gold text-gold hover:bg-gold hover:text-navy transition-all duration-300"
+                >
+                  Gratis Offerte
+                </button>
+              </OfferteDialog>
             </li>
           </ul>
         </div>
