@@ -6,69 +6,76 @@ import OfferteDialog from "./OfferteDialog";
 const navItems = ["Home", "Diensten", "Over Ons", "Portfolio", "Contact"];
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileDialogOpen, setMobileDialogOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-navy backdrop-blur-sm border-b border-gold/20">
-      <div className="container mx-auto flex items-center justify-between py-0 px-4">
-        <a href="#home">
-          <img src={logo} alt="Novus Meubelstoffeerderij" className="h-28 md:h-44 -mt-8 -mb-10 md:-mt-6 md:-mb-14" />
-        </a>
-        
-        {/* Desktop */}
-        <ul className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <li key={item}>
-              <a
-                href={`#${item.toLowerCase().replace(" ", "-")}`}
-                className="font-body text-sm tracking-widest uppercase text-gold-light hover:text-gold transition-colors duration-300"
-              >
-                {item}
-              </a>
-            </li>
-          ))}
-        </ul>
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-navy backdrop-blur-sm border-b border-gold/20">
+        <div className="container mx-auto flex items-center justify-between py-2 px-4">
+          <a href="#home">
+            <img src={logo} alt="Novus Meubelstoffeerderij" className="h-32 md:h-48 -mt-6 -mb-8 md:-mt-4 md:-mb-10" />
+          </a>
 
-        <OfferteDialog>
-          <button className="hidden md:inline-block font-body text-sm tracking-wider uppercase px-6 py-2.5 border border-gold text-gold hover:bg-gold hover:text-navy transition-all duration-300">
-            Gratis Offerte
-          </button>
-        </OfferteDialog>
-
-        {/* Mobile toggle */}
-        <button onClick={() => setOpen(!open)} className="md:hidden text-gold">
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden bg-navy border-t border-gold/20 animate-fade-in">
-          <ul className="flex flex-col items-center gap-6 py-8">
+          {/* Desktop */}
+          <ul className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <li key={item}>
                 <a
                   href={`#${item.toLowerCase().replace(" ", "-")}`}
-                  onClick={() => setOpen(false)}
-                  className="font-body text-sm tracking-widest uppercase text-gold-light hover:text-gold transition-colors"
+                  className="font-body text-sm tracking-widest uppercase text-gold-light hover:text-gold transition-colors duration-300"
                 >
                   {item}
                 </a>
               </li>
             ))}
-            <li>
-              <OfferteDialog onOpen={() => setOpen(false)}>
+          </ul>
+
+          <OfferteDialog>
+            <button className="hidden md:inline-block font-body text-sm tracking-wider uppercase px-6 py-2.5 border border-gold text-gold hover:bg-gold hover:text-navy transition-all duration-300">
+              Gratis Offerte
+            </button>
+          </OfferteDialog>
+
+          {/* Mobile toggle */}
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-gold">
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Mobile menu */}
+        {menuOpen && (
+          <div className="md:hidden bg-navy border-t border-gold/20 animate-fade-in">
+            <ul className="flex flex-col items-center gap-6 py-8">
+              {navItems.map((item) => (
+                <li key={item}>
+                  <a
+                    href={`#${item.toLowerCase().replace(" ", "-")}`}
+                    onClick={() => setMenuOpen(false)}
+                    className="font-body text-sm tracking-widest uppercase text-gold-light hover:text-gold transition-colors"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
+              <li>
                 <button
+                  onClick={() => { setMenuOpen(false); setMobileDialogOpen(true); }}
                   className="font-body text-sm tracking-wider uppercase px-6 py-2.5 border border-gold text-gold hover:bg-gold hover:text-navy transition-all duration-300"
                 >
                   Gratis Offerte
                 </button>
-              </OfferteDialog>
-            </li>
-          </ul>
-        </div>
-      )}
-    </nav>
+              </li>
+            </ul>
+          </div>
+        )}
+      </nav>
+
+      {/* Mobile offerte dialog - outside nav so it doesn't unmount */}
+      <OfferteDialog externalOpen={mobileDialogOpen} onExternalClose={() => setMobileDialogOpen(false)}>
+        <span />
+      </OfferteDialog>
+    </>
   );
 };
 

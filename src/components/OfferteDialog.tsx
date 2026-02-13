@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Send, ArrowRight } from "lucide-react";
 import {
   Dialog,
@@ -10,18 +10,29 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
-const OfferteDialog = ({ children, onOpen }: { children: React.ReactNode; onOpen?: () => void }) => {
+interface OfferteDialogProps {
+  children: React.ReactNode;
+  externalOpen?: boolean;
+  onExternalClose?: () => void;
+}
+
+const OfferteDialog = ({ children, externalOpen, onExternalClose }: OfferteDialogProps) => {
   const [open, setOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (externalOpen) setOpen(true);
+  }, [externalOpen]);
+
   const handleOpenChange = (value: boolean) => {
     setOpen(value);
-    if (value && onOpen) onOpen();
+    if (!value && onExternalClose) onExternalClose();
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setOpen(false);
+    if (onExternalClose) onExternalClose();
     toast.success("Offerte aanvraag verstuurd!", {
       description: "Wij nemen binnen 24 uur contact met u op.",
     });
