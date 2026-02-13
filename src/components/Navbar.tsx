@@ -12,7 +12,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-navy backdrop-blur-sm border-b border-gold/20">
       <div className="container mx-auto flex items-center justify-between py-0 px-4">
         <a href="#home">
-          <img src={logo} alt="Novus Meubelstoffeerderij" className="h-24 md:h-44 -mt-6 -mb-8 md:-mt-6 md:-mb-14" />
+          <img src={logo} alt="Novus Meubelstoffeerderij" className="h-28 md:h-44 -mt-8 -mb-10 md:-mt-6 md:-mb-14" />
         </a>
         
         {/* Desktop */}
@@ -57,9 +57,8 @@ const Navbar = () => {
               </li>
             ))}
             <li>
-              <OfferteDialog>
+              <OfferteDialog onOpen={() => setOpen(false)}>
                 <button
-                  onClick={() => setOpen(false)}
                   className="font-body text-sm tracking-wider uppercase px-6 py-2.5 border border-gold text-gold hover:bg-gold hover:text-navy transition-all duration-300"
                 >
                   Gratis Offerte

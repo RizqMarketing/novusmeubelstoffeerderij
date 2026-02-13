@@ -10,9 +10,14 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
-const OfferteDialog = ({ children }: { children: React.ReactNode }) => {
+const OfferteDialog = ({ children, onOpen }: { children: React.ReactNode; onOpen?: () => void }) => {
   const [open, setOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
+
+  const handleOpenChange = (value: boolean) => {
+    setOpen(value);
+    if (value && onOpen) onOpen();
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +28,7 @@ const OfferteDialog = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="bg-navy border border-gold/20 max-w-xl p-0 overflow-hidden max-h-[90vh] overflow-y-auto">
         {/* Decorative accent */}
