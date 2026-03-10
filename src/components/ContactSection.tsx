@@ -5,19 +5,22 @@ const contactDetails = [
   {
     icon: Phone,
     title: "Bel Ons",
-    detail: "+31 (0)6 12 34 56 78",
+    detail: "0345 22 87 25",
+    href: "tel:0345228725",
     sub: "Ma - Vr: 08:00 - 18:00",
   },
   {
     icon: Mail,
     title: "E-mail",
     detail: "info@novusmeubelstoffeerderij.nl",
+    href: "mailto:info@novusmeubelstoffeerderij.nl",
     sub: "Reactie binnen 24 uur",
   },
   {
     icon: MapPin,
     title: "Locatie",
     detail: "Nederland",
+    href: undefined,
     sub: "Wij komen bij u langs",
   },
 ];
@@ -61,7 +64,11 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <h4 className="font-display text-lg text-cream mb-1">{item.title}</h4>
-                    <p className="font-body text-cream/80 text-sm mb-1">{item.detail}</p>
+                    {item.href ? (
+                      <a href={item.href} className="font-body text-cream/80 text-sm mb-1 hover:text-gold transition-colors duration-200 block">{item.detail}</a>
+                    ) : (
+                      <p className="font-body text-cream/80 text-sm mb-1">{item.detail}</p>
+                    )}
                     <p className="font-body text-cream/40 text-xs">{item.sub}</p>
                   </div>
                 </div>
