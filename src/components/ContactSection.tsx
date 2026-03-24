@@ -5,8 +5,8 @@ const contactDetails = [
   {
     icon: Phone,
     title: "Bel Ons",
-    detail: "0345 22 87 25",
-    href: "tel:0345228725",
+    detail: "+31 345 22 87 20",
+    href: "tel:+31345228720",
     sub: "Ma - Vr: 08:00 - 18:00",
   },
   {
@@ -19,9 +19,9 @@ const contactDetails = [
   {
     icon: MapPin,
     title: "Locatie",
-    detail: "Nederland",
-    href: undefined,
-    sub: "Wij komen bij u langs",
+    detail: "Anthonie van Diemenstraat 8a, 4104 AE Culemborg",
+    href: "https://maps.google.com/?q=Anthonie+van+Diemenstraat+8a,+4104+AE+Culemborg",
+    sub: "Wij komen ook bij u langs",
   },
 ];
 
