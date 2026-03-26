@@ -17,8 +17,8 @@ exports.handler = async function (event) {
     const sessionMatch = setCookie.match(/session_id=([^;]+)/);
     const sessionId = sessionMatch ? sessionMatch[1] : '';
 
-    // Haal CSRF token op uit HTML
-    const csrfMatch = html.match(/name="csrf_token"[^>]*value="([^"]+)"/);
+    // Haal CSRF token op uit HTML (zit in JavaScript variabele)
+    const csrfMatch = html.match(/csrf_token:\s*['"]([^'"]+)['"]/);
     if (!csrfMatch) {
       return { statusCode: 500, body: JSON.stringify({ error: 'CSRF token niet gevonden' }) };
     }
