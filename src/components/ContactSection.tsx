@@ -1,5 +1,7 @@
-import { Phone, Mail, MapPin, Clock, Send, ArrowRight } from "lucide-react";
+import { Phone, Mail, MapPin, Send, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { submitLead } from "@/lib/odoo";
+import { toast } from "sonner";
 
 const contactDetails = [
   {
@@ -27,6 +29,31 @@ const contactDetails = [
 
 const ContactSection = () => {
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    naam: '',
+    telefoon: '',
+    email: '',
+    typeMeubel: '',
+    bericht: '',
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await submitLead(form);
+      toast.success("Aanvraag verstuurd!", {
+        description: "Wij nemen binnen 24 uur contact met u op.",
+      });
+      setForm({ naam: '', telefoon: '', email: '', typeMeubel: '', bericht: '' });
+      setFocusedField(null);
+    } catch {
+      toast.error("Er ging iets mis. Probeer het opnieuw of bel ons.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-24 md:py-32 bg-navy relative overflow-hidden">
@@ -102,7 +129,7 @@ const ContactSection = () => {
                   </div>
                 </div>
 
-                <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div className="relative">
                       <label className={`absolute left-5 transition-all duration-300 font-body text-xs tracking-wider uppercase pointer-events-none ${focusedField === 'naam' ? 'top-2 text-gold' : 'top-2 text-cream/30'}`}>
@@ -110,6 +137,8 @@ const ContactSection = () => {
                       </label>
                       <input
                         type="text"
+                        value={form.naam}
+                        onChange={(e) => setForm({ ...form, naam: e.target.value })}
                         onFocus={() => setFocusedField('naam')}
                         onBlur={(e) => !e.target.value && setFocusedField(null)}
                         className="w-full bg-navy/60 border border-gold/15 text-cream px-5 pt-7 pb-3 font-body text-sm focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] transition-all duration-300"
@@ -121,6 +150,8 @@ const ContactSection = () => {
                       </label>
                       <input
                         type="tel"
+                        value={form.telefoon}
+                        onChange={(e) => setForm({ ...form, telefoon: e.target.value })}
                         onFocus={() => setFocusedField('telefoon')}
                         onBlur={(e) => !e.target.value && setFocusedField(null)}
                         className="w-full bg-navy/60 border border-gold/15 text-cream px-5 pt-7 pb-3 font-body text-sm focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] transition-all duration-300"
@@ -134,28 +165,30 @@ const ContactSection = () => {
                     </label>
                     <input
                       type="email"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
                       onFocus={() => setFocusedField('email')}
                       onBlur={(e) => !e.target.value && setFocusedField(null)}
                       className="w-full bg-navy/60 border border-gold/15 text-cream px-5 pt-7 pb-3 font-body text-sm focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] transition-all duration-300"
                     />
                   </div>
 
-                  {/* Type meubel select */}
                   <div className="relative">
                     <label className="absolute left-5 top-2 font-body text-xs tracking-wider uppercase text-cream/30 pointer-events-none">
                       Type Meubel
                     </label>
                     <select
+                      value={form.typeMeubel}
+                      onChange={(e) => setForm({ ...form, typeMeubel: e.target.value })}
                       className="w-full bg-navy/60 border border-gold/15 text-cream px-5 pt-7 pb-3 font-body text-sm focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] transition-all duration-300 appearance-none cursor-pointer"
-                      defaultValue=""
                     >
-                      <option value="" disabled className="bg-navy">Selecteer een type...</option>
-                      <option value="bank" className="bg-navy">Bank / Sofa</option>
-                      <option value="fauteuil" className="bg-navy">Fauteuil</option>
-                      <option value="eetkamerstoelen" className="bg-navy">Eetkamerstoelen</option>
-                      <option value="antiek" className="bg-navy">Antiek Meubel</option>
-                      <option value="boot" className="bg-navy">Boot Bekleding</option>
-                      <option value="anders" className="bg-navy">Anders</option>
+                      <option value="" className="bg-navy">Selecteer een type...</option>
+                      <option value="Bank / Sofa" className="bg-navy">Bank / Sofa</option>
+                      <option value="Fauteuil" className="bg-navy">Fauteuil</option>
+                      <option value="Eetkamerstoelen" className="bg-navy">Eetkamerstoelen</option>
+                      <option value="Antiek Meubel" className="bg-navy">Antiek Meubel</option>
+                      <option value="Boot Bekleding" className="bg-navy">Boot Bekleding</option>
+                      <option value="Anders" className="bg-navy">Anders</option>
                     </select>
                     <ArrowRight className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-cream/30 rotate-90" />
                   </div>
@@ -166,6 +199,8 @@ const ContactSection = () => {
                     </label>
                     <textarea
                       rows={4}
+                      value={form.bericht}
+                      onChange={(e) => setForm({ ...form, bericht: e.target.value })}
                       onFocus={() => setFocusedField('bericht')}
                       onBlur={(e) => !e.target.value && setFocusedField(null)}
                       className="w-full bg-navy/60 border border-gold/15 text-cream px-5 pt-7 pb-3 font-body text-sm focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] transition-all duration-300 resize-none"
@@ -174,10 +209,11 @@ const ContactSection = () => {
 
                   <button
                     type="submit"
-                    className="w-full font-body text-sm tracking-wider uppercase px-8 py-4 bg-gold text-navy font-semibold hover:bg-gold-light transition-all duration-300 flex items-center justify-center gap-3 group"
+                    disabled={loading}
+                    className="w-full font-body text-sm tracking-wider uppercase px-8 py-4 bg-gold text-navy font-semibold hover:bg-gold-light transition-all duration-300 flex items-center justify-center gap-3 group disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    Verstuur Aanvraag
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                    {loading ? 'Versturen...' : 'Verstuur Aanvraag'}
+                    {!loading && <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />}
                   </button>
 
                   <p className="text-center font-body text-xs text-cream/30 mt-4">
