@@ -1,5 +1,5 @@
-import { Phone, Mail, MapPin, Send, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { Phone, Mail, MapPin, Send, ArrowRight, X, Upload } from "lucide-react";
+import { useState, useRef } from "react";
 import { submitLead } from "@/lib/odoo";
 import { toast } from "sonner";
 
@@ -27,9 +27,33 @@ const contactDetails = [
   },
 ];
 
+const resizeImage = (file: File): Promise<string> =>
+  new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const maxWidth = 1200;
+      let { width, height } = img;
+      if (width > maxWidth) {
+        height = Math.round((height * maxWidth) / width);
+        width = maxWidth;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d')!.drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/jpeg', 0.82).split(',')[1]);
+    };
+    img.src = url;
+  });
+
 const ContactSection = () => {
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [fotos, setFotos] = useState<File[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({
     naam: '',
     telefoon: '',
@@ -38,15 +62,28 @@ const ContactSection = () => {
     bericht: '',
   });
 
+  const addFotos = (files: FileList | File[]) => {
+    const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+    setFotos(prev => [...prev, ...imageFiles].slice(0, 10));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await submitLead(form);
+      const fotoData = await Promise.all(
+        fotos.map(async (foto) => ({
+          naam: foto.name,
+          type: foto.type,
+          data: await resizeImage(foto),
+        }))
+      );
+      await submitLead({ ...form, fotos: fotoData });
       toast.success("Aanvraag verstuurd!", {
         description: "Wij nemen binnen 24 uur contact met u op.",
       });
       setForm({ naam: '', telefoon: '', email: '', typeMeubel: '', bericht: '' });
+      setFotos([]);
       setFocusedField(null);
     } catch {
       toast.error("Er ging iets mis. Probeer het opnieuw of bel ons.");
@@ -205,6 +242,68 @@ const ContactSection = () => {
                       onBlur={(e) => !e.target.value && setFocusedField(null)}
                       className="w-full bg-navy/60 border border-gold/15 text-cream px-5 pt-7 pb-3 font-body text-sm focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(201,168,76,0.1)] transition-all duration-300 resize-none"
                     />
+                  </div>
+
+                  {/* Foto upload sectie */}
+                  <div>
+                    <label className="block font-body text-xs tracking-wider uppercase text-cream/30 mb-2">
+                      Foto's van uw aanvraag
+                    </label>
+                    <div
+                      className={`relative border-2 border-dashed transition-all duration-300 p-6 cursor-pointer ${isDragging ? 'border-gold bg-gold/5' : 'border-gold/20 hover:border-gold/40 bg-navy/40'}`}
+                      onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                      onDragLeave={() => setIsDragging(false)}
+                      onDrop={(e) => { e.preventDefault(); setIsDragging(false); addFotos(e.dataTransfer.files); }}
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={(e) => e.target.files && addFotos(e.target.files)}
+                      />
+                      <div className="flex flex-col items-center gap-2 text-center">
+                        <Upload className={`w-6 h-6 transition-colors duration-300 ${isDragging ? 'text-gold' : 'text-cream/30'}`} />
+                        <p className="font-body text-sm text-cream/50">
+                          Sleep hier uw bestanden
+                        </p>
+                        <p className="font-body text-xs text-cream/30">of</p>
+                        <p className="font-body text-xs text-gold-light hover:text-gold transition-colors duration-200">
+                          blader door uw bestanden
+                        </p>
+                      </div>
+                      <span className="absolute bottom-2 right-3 font-body text-xs text-cream/25">
+                        {fotos.length} van 10
+                      </span>
+                    </div>
+
+                    {/* Thumbnail grid */}
+                    {fotos.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {fotos.map((foto, i) => {
+                          const previewUrl = URL.createObjectURL(foto);
+                          return (
+                            <div key={i} className="relative group w-16 h-16 flex-shrink-0">
+                              <img
+                                src={previewUrl}
+                                alt={foto.name}
+                                className="w-full h-full object-cover border border-gold/15"
+                                onLoad={() => URL.revokeObjectURL(previewUrl)}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => setFotos(f => f.filter((_, j) => j !== i))}
+                                className="absolute inset-0 bg-navy/70 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+                              >
+                                <X className="w-4 h-4 text-cream" />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
 
                   <button

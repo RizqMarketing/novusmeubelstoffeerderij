@@ -1,9 +1,16 @@
+export interface FotoData {
+  naam: string;
+  type: string;
+  data: string; // base64 zonder data-URL prefix
+}
+
 export interface LeadData {
   naam?: string;
   telefoon?: string;
   email?: string;
   typeMeubel?: string;
   bericht?: string;
+  fotos?: FotoData[];
 }
 
 export async function submitLead(data: LeadData): Promise<void> {

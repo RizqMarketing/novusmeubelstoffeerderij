@@ -24,8 +24,8 @@ exports.handler = async function (event) {
     }
     const csrfToken = csrfMatch[1];
 
-    // Stap 2: Verstuur het formulier naar Odoo
-    const formData = new URLSearchParams();
+    // Stap 2: Verstuur het formulier naar Odoo via multipart/form-data
+    const formData = new FormData();
     formData.append('contact_name', data.naam || '');
     formData.append('phone', data.telefoon || '');
     formData.append('email_from', data.email || '');
@@ -39,14 +39,22 @@ exports.handler = async function (event) {
     formData.append('user_id', '5');
     formData.append('csrf_token', csrfToken);
 
+    // Voeg foto's toe als bijlagen (worden als ir.attachment aan de lead gekoppeld)
+    if (Array.isArray(data.fotos)) {
+      for (const foto of data.fotos) {
+        const buffer = Buffer.from(foto.data, 'base64');
+        const blob = new Blob([buffer], { type: foto.type });
+        formData.append('ufile', blob, foto.naam);
+      }
+    }
+
     const submitRes = await fetch(`${ODOO_URL}/website/form/crm.lead`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
         'Cookie': `session_id=${sessionId}`,
         'Referer': `${ODOO_URL}/contactus`,
       },
-      body: formData.toString(),
+      body: formData,
     });
 
     if (!submitRes.ok) {
