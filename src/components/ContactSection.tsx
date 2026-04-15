@@ -138,19 +138,6 @@ const ContactSection = () => {
                 </div>
               ))}
 
-              {/* Trust badge */}
-              <div className="p-6 bg-gold/5 border border-gold/20 text-center">
-                <div className="flex items-center justify-center gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-gold fill-gold" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="font-body text-sm text-cream/70">
-                  Beoordeeld met een <span className="text-gold font-semibold">4.9/5</span> door onze klanten
-                </p>
-              </div>
             </div>
 
             {/* Right: Form */}
