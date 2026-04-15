@@ -1,6 +1,10 @@
 import serviceSofa from "@/assets/service-sofa.jpg";
 import serviceChairs from "@/assets/service-chairs.jpg";
 import serviceArmchair from "@/assets/service-armchair.jpg";
+import serviceCamper from "@/assets/service-camper.jpg";
+import serviceCaravan from "@/assets/service-caravan.jpg";
+import serviceBoten from "@/assets/service-boten.jpg";
+import serviceBootkussens from "@/assets/service-bootkussens.jpg";
 
 const services = [
   {
@@ -21,6 +25,44 @@ const services = [
     description:
       "Antieke en klassieke meubels herstellen we met oog voor authentiek detail en respect voor het origineel.",
   },
+  {
+    image: serviceBoten,
+    title: "Boten",
+    description:
+      "Volledige herstoffering van boot-interieurs met waterbestendige, UV-vaste en duurzame stoffen.",
+  },
+  {
+    image: serviceBootkussens,
+    title: "Bootkussens",
+    description:
+      "Nieuwe bootkussens op maat, gemaakt met schimmelwerende vulling en weerbestendige bekleding.",
+  },
+  {
+    image: serviceCamper,
+    title: "Campers",
+    description:
+      "Camperbanken, zittingen en interieur opnieuw bekleed voor comfort en stijl tijdens elke reis.",
+  },
+  {
+    image: serviceCaravan,
+    title: "Caravans",
+    description:
+      "Geef uw caravan-interieur een tweede leven met slijtvaste stoffen die er jaren fris uitzien.",
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
+    title: "Horeca meubels",
+    description:
+      "Robuuste herstoffering van stoelen, banken en booths voor restaurants, cafés en hotels.",
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80",
+    title: "Kussens op maat",
+    description:
+      "Sier- en zitkussens op maat gemaakt, in elk formaat, stof en vulling naar uw wens.",
+  },
 ];
 
 const ServicesSection = () => {
@@ -37,7 +79,7 @@ const ServicesSection = () => {
           <div className="w-20 h-0.5 bg-gold mx-auto" />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
             <div
               key={service.title}

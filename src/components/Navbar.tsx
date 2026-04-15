@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import OfferteDialog from "./OfferteDialog";
 
-const navItems = ["Home", "Diensten", "Over Ons", "Portfolio", "Contact"];
+const navItems = ["Home", "Diensten", "Over Ons", "Contact"];
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
